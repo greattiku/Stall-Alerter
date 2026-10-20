@@ -1,0 +1,3 @@
+# Streamlit and pandas power the local UI; core calculations still use the existing package.
+streamlit>=1.40,<2.0
+pandas>=2.2,<4.0

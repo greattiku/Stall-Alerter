@@ -1,0 +1,10 @@
+candidate_name,email,current_stage,stage_start_date,assessment_scores,assessment_status
+Sample Completed,Technical Interview,2026-10-10,"[82,91,88]",Complete
+Sample Incomplete,HR Interview,2026-10-12,"[70,80]",Incomplete
+Sample Unknown,Executive Interview,2026-10-09,"[90,95]",Unknown
+Sample Missing Scores,Offer,2026-10-16,,Complete
+Sample Missing Assessment Status,Screening,2026-10-14,"[60,80]",
+Sample Missing Date,Technical Interview,,"[80,90]",Complete
+,Screening,2026-10-14,"[90,92]",Complete
+Sample Missing Stage,,2026-10-14,,Unknown
+Sample Invalid Date,HR Interview,Unknown,"[75,85]",Complete

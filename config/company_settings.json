@@ -1,0 +1,30 @@
+{
+  "company_name": "Job Hive",
+  "stages": {
+    "Screening": {
+      "allowed_days": 5,
+      "weight": 1,
+      "recommended_action": "Request interview feedback and confirm the next step."
+    },
+    "Technical Interview": {
+      "allowed_days": 7,
+      "weight": 2,
+      "recommended_action": "Check whether the assessment has been reviewed."
+    },
+    "HR Interview": {
+      "allowed_days": 4,
+      "weight": 3,
+      "recommended_action": "Request interview feedback and confirm the next step."
+    },
+    "Executive Interview": {
+      "allowed_days": 2,
+      "weight": 4,
+      "recommended_action": "Request panel feedback and agree on the next decision."
+    },
+    "Offer": {
+      "allowed_days": 1,
+      "weight": 5,
+      "recommended_action": "Follow up with the hiring manager on the offer decision."
+    }
+  }
+}
