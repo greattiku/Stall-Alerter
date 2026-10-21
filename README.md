@@ -1,10 +1,10 @@
-Stall Alerter
+## Stall Alerter
 
 Stall Alerter helps recruiters identify candidates who have spent longer than the configured allowance in a hiring stage. It provides a local Streamlit interface for maintaining candidate records and company stage settings, alongside a command-line interface (CLI).
 
 Both interfaces use the same validation, calculation, ranking, and reporting modules, helping maintain consistent behaviour across the application.
 
-Features
+## Features
 
 - Configurable hiring stages: Define your company's stages, allowed days, stage weights, and recommended actions.
 - Candidate management: Add, edit, delete, and import candidate records.
@@ -16,7 +16,9 @@ Features
 - Local persistence: Store candidate records and company settings in local project files.
 - Automated tests: Verify the core calculations, ranking rules, and validation behaviour.
 
-Requirements
+
+
+## 1. Requirements
 
 - Python 3.10 or newer.
 - Streamlit and pandas for the user interface.
@@ -24,65 +26,83 @@ Requirements
 
 The core business logic lives in "src/stall_alerter/".
 
-Installation
+
+
+## 2. Installation
 
 Run the commands from the project root, "stall-alerter/".
 
-Windows PowerShell
+## --Windows PowerShell
 
 Create a virtual environment:
 
+```
 python -m venv .venv
+```
 
 Activate it:
 
+```
 .venv\Scripts\Activate.ps1
-
+```
 Install the dependencies:
 
+```
 python -m pip install -r requirements.txt
+```
 
 If PowerShell prevents activation because of its execution policy, consult the official Python documentation for virtual environments and your organisation's security guidance rather than changing system-wide security settings unnecessarily.
 
-macOS and Linux
+## --macOS and Linux
 
 Create a virtual environment:
-
+```
 python3 -m venv .venv
+```
 
 Activate it:
 
+```
 source .venv/bin/activate
+```
 
 Install the dependencies:
 
+```
 python -m pip install -r requirements.txt
+```
 
-Verify Python
+## --Verify Python
 
 Check the Python version:
 
 Windows:
 
+```
 python --version
+```
 
 macOS/Linux:
 
+```
 python3 --version
-
+```
 The project requires Python 3.10 or newer.
 
-Start the Streamlit App
+
+## 3. Start the Streamlit App
 
 After installing the dependencies and activating the virtual environment, run:
 
+```
 python -m streamlit run app.py
+```
 
 This command works in Windows PowerShell, macOS, and Linux.
 
 Streamlit normally opens the application in your default browser. If it does not, follow the local URL printed in the terminal.
 
-First-Time Setup
+- First-Time Setup
 
 Start in Company settings and add the hiring stages your company actually uses.
 
@@ -107,18 +127,19 @@ Company settings are saved in:
 
 The dashboard uses the saved files, supports a reference date, search and filters, explains ranking, and can generate and download a CSV report.
 
-Candidate CSV Format
+## 3b. Candidate CSV Format
 
-The CSV must contain the following columns:
+The CSV must contain the following required columns:
 
 Column| Required?| Description
 "candidate_name"| Yes| Candidate's name.
+"email" | No | Candidate's Email Address.
 "current_stage"| Yes| Current hiring stage; it must match a stage configured in Company settings.
 "stage_start_date"| Yes| Date the candidate entered the current stage, using "YYYY-MM-DD".
 "assessment_scores"| No| JSON array of percentage scores from 0 to 100, such as "[82, 91]", stored as a CSV cell.
 "assessment_status"| No| Assessment status: "completed", "incomplete", or "unknown". The alias "complete" is also accepted for "completed".
 
-Getting Sample Data
+## 3c. Getting Sample Data
 
 Use Manage candidates → Download sample candidate CSV to download an example containing:
 
@@ -131,7 +152,7 @@ The sample provides a way to exercise the application's validation and reporting
 
 Valid sample rows use the configured sample stage names. If your company uses different stages, update the sample values to match your configuration before importing.
 
-Import Behaviour
+## 3d. Import Behaviour
 
 Use Import a hiring-board CSV to import candidate records.
 
@@ -139,30 +160,32 @@ Importing appends records by default. Enable the replace option only when you in
 
 The application validates required columns before importing. Review data-quality warnings on the dashboard, particularly those relating to missing dates, unknown stages, and other invalid candidate details.
 
-Business Rules
 
-Days in Stage
+
+## 4. Business Rules
+
+## --Days in Stage
 
 The application calculates the calendar-day difference between the reference date and the candidate's stage start date.
 
 "Days in Stage = Reference Date - Stage Start Date"
 
-Days Overdue
+## --Days Overdue
 
 "Days Overdue = max(0, Days in Stage - Allowed Days)"
 
-Candidate Status
+## --Candidate Status
 
 - Stalled: The candidate has exceeded the allowed duration; overdue days are greater than zero.
 - On track: The candidate has not exceeded the allowed duration. Reaching the allowed duration exactly still counts as on track.
 
-Stage Priority Score
+## --Stage Priority Score
 
 "Stage Priority Score = Days Overdue × Stage Weight"
 
 The stage weight is configured by the company and must be between 1 and 5.
 
-Candidate Assessment Score
+## --Candidate Assessment Score
 
 Candidate Assessment Score is an independent metric.
 
@@ -174,7 +197,7 @@ A score is displayed only when the assessment status is explicitly "completed" a
 
 Assessment scores do not affect candidate urgency, status, priority score, or ranking.
 
-Ranking Order
+## --Ranking Order
 
 Candidates are ranked according to these rules:
 
@@ -194,13 +217,15 @@ The ranking is deterministic for the same input data, configuration, and referen
 - Records with missing or invalid required fields, such as candidate name, current stage, or stage start date, are excluded from ranking and reported with validation warnings.
 - Missing assessment scores do not automatically exclude an otherwise valid candidate. Assessment results are handled separately from follow-up priority.
 
-Recommended Actions
+## Recommended Actions
 
 Recommended actions are configured suggestions intended to help recruiters decide what to do next.
 
 The application does not automatically contact, reject, or retain candidates.
 
-Command-Line Workflow
+
+
+## 5. Command-Line Workflow
 
 The CLI remains available and shares the same calculation and ranking logic as the Streamlit interface.
 
@@ -212,10 +237,11 @@ By default, it uses:
 
 Configure at least one hiring stage and add candidate records before running the CLI. The CLI requires a valid, non-empty stage configuration and at least one candidate row.
 
-Windows PowerShell
+## Windows PowerShell
 
 Set "PYTHONPATH" and run the CLI:
 
+```
 $env:PYTHONPATH = "$PWD\src"
 
 python -m stall_alerter.main `
@@ -223,43 +249,54 @@ python -m stall_alerter.main `
   --config config/company_settings.json `
   --output reports/priority_report.csv `
   --as-of 2026-10-19
+```
 
-macOS and Linux
+## macOS and Linux
 
+```
 PYTHONPATH=src python -m stall_alerter.main \
   --input data/hiring_board.csv \
   --config config/company_settings.json \
   --output reports/priority_report.csv \
   --as-of 2026-10-19
+```
 
 The example reference date makes the calculation reproducible. Replace it with your intended evaluation date.
 
 Omit "--as-of" to use today's local date.
 
-Running the Tests
+
+
+## 6. Running the Tests
 
 The tests use temporary files and do not require a real hiring board.
 
 Run the tests from the project root with the project dependencies installed.
 
-Windows PowerShell
+## Windows PowerShell
 
+```
 $env:PYTHONPATH = "$PWD\src"
 python -m unittest discover -s tests -v
+```
 
-macOS and Linux
-
+## macOS and Linux
+```
 PYTHONPATH=src python -m unittest discover -s tests -v
+```
 
 The automated tests cover core application behaviour, including calculations, ranking, assessment handling, and validation scenarios.
 
 To check the Streamlit entry point for Python syntax errors:
 
+```
 python -m py_compile app.py
+```
 
 This command checks syntax; it does not replace running the application and testing the interactive workflow in a browser.
 
-Project Structure
+
+## 7. Project Structure
 
 stall-alerter/
 ├── app.py
@@ -282,7 +319,8 @@ stall-alerter/
 
 The structure above summarises the main project files. The exact contents of the source and test directories depend on the implementation.
 
-Important Files
+
+## 8. Important Files
 
 File or directory| Purpose
 "app.py"| Streamlit presentation layer and local candidate-management and settings interface.
@@ -297,7 +335,8 @@ File or directory| Purpose
 
 The generated report is ignored by Git so candidate information is not accidentally committed. Confirm that your ".gitignore" also excludes any real candidate input files and other sensitive data.
 
-Privacy and Scope
+
+## 9. Privacy and Scope
 
 Stall Alerter stores candidate records and company settings in local files within the project directory.
 
@@ -307,7 +346,7 @@ Local storage does not automatically encrypt candidate information. Protect the 
 
 Do not commit real candidate information to a public or shared repository.
 
-Current Scope
+## --Current Scope
 
 Stall Alerter is a focused MVP for recruitment-stage follow-up prioritisation.
 
