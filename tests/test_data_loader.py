@@ -108,10 +108,17 @@ class DataLoaderTests(unittest.TestCase):
         self.assertTrue(any("unknown hiring stage" in warning for warning in warnings))
 
     def test_duplicate_names_excluded(self):
-        rows = [{"candidate_name": "Ada"}, {"candidate_name": " ada "}, {"candidate_name": "Ben"}]
+        rows = [
+        {"candidate_name": "Ada", "email": "ada.one@example.com"},
+        {"candidate_name": " ada ", "email": "ada.two@example.com"},
+        {"candidate_name": "Ben", "email": "ben@example.com"},
+        ]
         kept, warnings = exclude_duplicate_candidates(rows)
-        self.assertEqual([item["candidate_name"] for item in kept], ["Ben"])
-        self.assertTrue(warnings)
+        self.assertEqual(
+            [item["candidate_name"] for item in kept],
+            ["Ada", " ada ", "Ben"],
+        )
+        self.assertFalse(warnings)
 
 
 if __name__ == "__main__":

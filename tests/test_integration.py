@@ -19,9 +19,9 @@ class IntegrationTests(unittest.TestCase):
             output_path = root / "report.csv"
             # The candidate below exists only in this test and is never shipped as product data.
             with input_path.open("w", encoding="utf-8", newline="") as file:
-                writer = csv.DictWriter(file, fieldnames=["candidate_name", "current_stage", "stage_start_date", "assessment_scores", "assessment_status"])
+                writer = csv.DictWriter(file, fieldnames=["candidate_name", "email", "current_stage", "stage_start_date", "assessment_scores", "assessment_status"])
                 writer.writeheader()
-                writer.writerow({"candidate_name": "Test Candidate", "current_stage": "Interview", "stage_start_date": "2026-10-10", "assessment_scores": "[80, 90]", "assessment_status": "completed"})
+                writer.writerow({"candidate_name": "Test Candidate", "email": "test.candidate@example.com", "current_stage": "Interview", "stage_start_date": "2026-10-10", "assessment_scores": "[80, 90]", "assessment_status": "completed"})
             config_path.write_text(json.dumps({"stages": {"Interview": {"allowed_days": 4, "weight": 5, "recommended_action": "Request feedback."}}}), encoding="utf-8")
             result = run(str(input_path), str(config_path), str(output_path), date(2026, 10, 19))
             self.assertEqual(result, 0)
