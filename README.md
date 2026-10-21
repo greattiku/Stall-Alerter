@@ -130,13 +130,21 @@ The dashboard uses the saved files, supports a reference date, search and filter
 ## 3b. Candidate CSV Format
 
 The CSV must contain the following required columns:
+(see https://github.com/greattiku/Stall-Alerter/blob/main/data/sample_candidate_import.csv for sample sheet)
+
 
 Column| Required?| Description
+
 "candidate_name"| Yes| Candidate's name.
+
 "email" | No | Candidate's Email Address.
+
 "current_stage"| Yes| Current hiring stage; it must match a stage configured in Company settings.
+
 "stage_start_date"| Yes| Date the candidate entered the current stage, using "YYYY-MM-DD".
+
 "assessment_scores"| No| JSON array of percentage scores from 0 to 100, such as "[82, 91]", stored as a CSV cell.
+
 "assessment_status"| No| Assessment status: "completed", "incomplete", or "unknown". The alias "complete" is also accepted for "completed".
 
 ## 3c. Getting Sample Data
